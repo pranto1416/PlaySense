@@ -1,5 +1,6 @@
 using UnityEngine;
 using PlaySense.Recording;
+using PlaySense.Reporting;
 
 namespace PlaySense.Core
 {
@@ -67,6 +68,18 @@ namespace PlaySense.Core
               Debug.Log($"Object: {last.ObjectName}");
               Debug.Log($"Position: {last.Position}");
               Debug.Log($"Time: {last.Timestamp}");
+              
+              SessionAnalyzer analyzer = new();
+
+              SessionMetrics metrics = analyzer.Analyze(_recorder.CurrentSession);
+
+              Debug.Log("======PLAYSENSE REPORT======");
+              Debug.Log($"Frames : {metrics.RecordedFrames}");
+              Debug.Log($"Duration: {metrics.Duration:F2}s");
+              Debug.Log($"Distance: {metrics.DistanceTravelled:F2} m");
+              Debug.Log($"Average Speed: {metrics.AverageSpeed:F2} m/s");  
+
+              
         }
     }
 }
