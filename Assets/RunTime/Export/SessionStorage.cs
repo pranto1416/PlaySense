@@ -26,5 +26,27 @@ namespace PlaySense.Export
 
             Debug.Log($"PlaySense Session Saved:\n{path}");
         }
+
+        public static string[] GetSessionFiles()
+        {
+            if (!Directory.Exists(Folder))
+                return Array.Empty<string>();
+
+            return Directory.GetFiles(
+                Folder,
+                "*.pss",
+                SearchOption.TopDirectoryOnly);
+        }
+
+        public static SessionData Load(string path){
+            if(!File.Exists(path)){
+                Debug.LogError($"Session not found:\n{path}");
+                return null;
+            }
+
+            string json = File.ReadAllText(path);
+
+            return JsonUtility.FromJson<SessionData>(json);
+        }
     }
 }
