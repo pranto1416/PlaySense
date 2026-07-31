@@ -1,6 +1,7 @@
 using UnityEngine;
 using PlaySense.Recording;
 using PlaySense.Reporting;
+using PlaySense.Export;
 
 namespace PlaySense.Core
 {
@@ -78,6 +79,8 @@ namespace PlaySense.Core
               Debug.Log($"Duration: {metrics.Duration:F2}s");
               Debug.Log($"Distance: {metrics.DistanceTravelled:F2} m");
               Debug.Log($"Average Speed: {metrics.AverageSpeed:F2} m/s");  
+              
+              SessionStorage.Save(_recorder.CurrentSession);
 
               
         }
