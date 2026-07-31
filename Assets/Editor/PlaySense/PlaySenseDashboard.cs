@@ -11,14 +11,6 @@ public class PlaySenseDashboard : EditorWindow
 
     private void OnGUI()
     {
-        GUILayout.Space(10);
-
-        GUILayout.Label(
-            "PlaySense Dashboard",
-            EditorStyles.boldLabel);
-
-        GUILayout.Space(15);
-
-        GUILayout.Label("No session loaded.");
+        GUILayout.Label("PlaySense Dashboard");
     }
 }
