@@ -1,5 +1,5 @@
-using UnityEngine;
 using PlaySense.Data.Models;
+using UnityEngine;
 
 namespace PlaySense.Recording
 {
@@ -15,18 +15,16 @@ namespace PlaySense.Recording
             _session.Events.Clear();
         }
 
-        public void RecordFrame(
-            string objectName,
-            float timestamp,
-            Vector3 position,
-            Quaternion rotation)
+        public void RecordTrackable(PlaySenseTrackable trackable)
         {
-            _session.Frames.Add(new PlaySense.Data.Models.FrameData
+            Transform t = trackable.CachedTransform;
+
+            _session.Frames.Add(new FrameData
             {
-                ObjectName = objectName,
-                Timestamp = timestamp,
-                Position = position,
-                Rotation = rotation
+                ObjectName = trackable.name,
+                Timestamp = Time.time,
+                Position = t.position,
+                Rotation = t.rotation
             });
         }
     }
