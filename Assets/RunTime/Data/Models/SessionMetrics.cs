@@ -7,6 +7,8 @@ namespace PlaySense.Data.Models
     {
         public int FrameCount;
 
+        public float Duration;
+
         public float TotalDistance;
 
         public float AverageSpeed;

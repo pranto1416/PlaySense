@@ -1,6 +1,6 @@
 using UnityEngine;
+using PlaySense.Data.Models;
 using PlaySense.Recording;
-using PlaySense.Reporting;
 using PlaySense.Export;
 
 namespace PlaySense.Core
@@ -18,17 +18,22 @@ namespace PlaySense.Core
         private void Awake()
         {
             Debug.Log("PlaySense Awake");
+
             _recorder = new SessionRecorder();
 
             _trackables = FindObjectsByType<PlaySenseTrackable>(
                 FindObjectsSortMode.None);
 
-            Debug.Log($"Found {_trackables.Length} trackables.");    
+            Debug.Log($"Found {_trackables.Length} trackables.");
         }
 
         private void Start()
         {
+            Debug.Log("Starting PlaySense...");
+
             _recorder.StartRecording();
+
+            Debug.Log("Recording Started!");
         }
 
         private void Update()
@@ -44,45 +49,22 @@ namespace PlaySense.Core
             {
                 _recorder.RecordTrackable(trackable);
             }
-
-            Debug.Log($"Frames: {_recorder.CurrentSession.Frames.Count}");
         }
 
         private void OnDestroy()
         {
-              Debug.Log($"Frames Recorded: {_recorder.CurrentSession.Frames.Count}");
+            SessionData session = _recorder.StopRecording();
 
-              if (_recorder.CurrentSession.Frames.Count == 0)
-                    return;
+            if (session == null || session.Frames.Count == 0)
+                return;
 
-              var first = _recorder.CurrentSession.Frames[0];
-              var last = _recorder.CurrentSession.Frames[^1];
+            SessionStorage.Save(session);
 
-              Debug.Log($"FIRST FRAME");
-              Debug.Log($"Object: {first.ObjectName}");
-              Debug.Log($"Position: {first.Position}");
-              Debug.Log($"Time: {first.Timestamp}");
-
-              Debug.Log("----------------");
-
-              Debug.Log($"LAST FRAME");
-              Debug.Log($"Object: {last.ObjectName}");
-              Debug.Log($"Position: {last.Position}");
-              Debug.Log($"Time: {last.Timestamp}");
-              
-              SessionAnalyzer analyzer = new();
-
-              SessionMetrics metrics = analyzer.Analyze(_recorder.CurrentSession);
-
-              Debug.Log("======PLAYSENSE REPORT======");
-              Debug.Log($"Frames : {metrics.RecordedFrames}");
-              Debug.Log($"Duration: {metrics.Duration:F2}s");
-              Debug.Log($"Distance: {metrics.DistanceTravelled:F2} m");
-              Debug.Log($"Average Speed: {metrics.AverageSpeed:F2} m/s");  
-              
-              SessionStorage.Save(_recorder.CurrentSession);
-
-              
+            Debug.Log("====== PLAYSENSE ======");
+            Debug.Log($"Frames: {session.Metrics.FrameCount}");
+            Debug.Log($"Duration: {session.Metrics.Duration:F2}s");
+            Debug.Log($"Distance: {session.Metrics.TotalDistance:F2}m");
+            Debug.Log($"Average Speed: {session.Metrics.AverageSpeed:F2}m/s");
         }
     }
 }
