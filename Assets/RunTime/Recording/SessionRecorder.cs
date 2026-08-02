@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using PlaySense.Data.Models;
 using PlaySense.Reporting;
-using PlaySense.Recording;
 using PlaySense.Core;
 
 namespace PlaySense.Recording
@@ -36,6 +35,7 @@ namespace PlaySense.Recording
 
         public void RecordEvent(GameEventData gameEvent)
         {
+            gameEvent.Timestamp = Time.time - _startTime;
             _session.Events.Add(gameEvent);
         }
 
