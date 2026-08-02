@@ -1,23 +1,24 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace PlaySense.Data.Models
 {
     [Serializable]
     public class GameEventData
     {
-        public string EventType = string.Empty;
+        public string Category;
+
+        public string Action;
+
+        public string Target;
 
         public float Timestamp;
 
-        public List<EventParameter> Parameters = new();
-    }
+        public float Duration;
 
-    [Serializable]
-    public class EventParameter
-    {
-        public string Key;
-        public string Value;
-        
+        public Vector3 Position;
+
+        public List<EventParameter> Metadata = new();
     }
 }
