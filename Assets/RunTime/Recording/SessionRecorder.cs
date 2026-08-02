@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using PlaySense.Data.Models;
 using PlaySense.Reporting;
+using PlaySense.Recording;
+using PlaySense.Core;
 
 namespace PlaySense.Recording
 {
@@ -21,14 +23,14 @@ namespace PlaySense.Recording
             _startTime = Time.time;
         }
 
-        public void RecordTrackable(PlaySenseTrackable trackable)
+        public void RecordTrackable(PlaySenseAgent agent)
         {
             _session.Frames.Add(new FrameData
             {
-                ObjectName = trackable.name,
+                ObjectName = agent.name,
                 Timestamp = Time.time,
-                Position = trackable.transform.position,
-                Rotation = trackable.transform.rotation
+                Position = agent.transform.position,
+                Rotation = agent.transform.rotation
             });
         }
 

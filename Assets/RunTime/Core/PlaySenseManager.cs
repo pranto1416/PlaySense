@@ -11,7 +11,7 @@ namespace PlaySense.Core
         private float sampleRate = 20f;
 
         private SessionRecorder _recorder;
-        private PlaySenseTrackable[] _trackables;
+        private PlaySenseAgent[] _agents;
 
         private float _timer;
 
@@ -20,11 +20,10 @@ namespace PlaySense.Core
             Debug.Log("PlaySense Awake");
 
             _recorder = new SessionRecorder();
-
-            _trackables = FindObjectsByType<PlaySenseTrackable>(
+            _agents = FindObjectsByType<PlaySenseAgent>(
                 FindObjectsSortMode.None);
 
-            Debug.Log($"Found {_trackables.Length} trackables.");
+            Debug.Log($"Found {_agents.Length} agents.");
         }
 
         private void Start()
@@ -36,6 +35,10 @@ namespace PlaySense.Core
             Debug.Log("Recording Started!");
         }
 
+        public void RecordEvent(GameEventData gameEvent){
+            _recorder.RecordEvent(gameEvent);
+        }
+
         private void Update()
         {
             _timer += Time.deltaTime;
@@ -45,9 +48,9 @@ namespace PlaySense.Core
 
             _timer = 0f;
 
-            foreach (var trackable in _trackables)
+            foreach (var agent in _agents)
             {
-                _recorder.RecordTrackable(trackable);
+                _recorder.RecordTrackable(agent);
             }
         }
 

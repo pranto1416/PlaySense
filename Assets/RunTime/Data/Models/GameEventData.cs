@@ -6,7 +6,7 @@ namespace PlaySense.Data.Models
     [Serializable]
     public class GameEventData
     {
-        public string Type;
+        public string EventType = string.Empty;
 
         public float Timestamp;
 
